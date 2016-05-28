@@ -1,10 +1,15 @@
+import sys
 import re
 import os
 import time
 import socket
 import threading
 
-PORT = 8888
+if len(sys.argv) < 2:
+	print 'Please specify port.'
+	sys.exit()
+
+PORT = int(sys.argv[1])
 
 class SimpleKVS:
 	RESPONSE_SUCCESS = 0
@@ -20,7 +25,7 @@ class SimpleKVS:
 		listen_socket.bind((host, port))
 		listen_socket.listen(5)
 
-		print 'Starting SimpleKVS server' 
+		print 'Starting SimpleKVS server on port %s' % port 
 		while True:
 			client_connection, client_address = listen_socket.accept()
 			threading.Thread(target = self.handle_connection, args = (client_connection, client_address)).start()
